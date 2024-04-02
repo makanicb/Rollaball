@@ -389,8 +389,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  jump: 5
-  maxJumps: 2
+  jump: 10
+  maxAirJumps: 1
   countText: {fileID: 1645737242}
   winText: {fileID: 1117338488}
 --- !u!114 &258327870

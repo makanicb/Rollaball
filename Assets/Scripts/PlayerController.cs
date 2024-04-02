@@ -15,8 +15,11 @@ public class PlayerController : MonoBehaviour
     public float speed = 0.0f;
     public float jump = 0.0f;
     //Number of jumps the player can make
-    public int maxJumps = 0;
-    private int jumps;
+    //while not on the ground
+    public int maxAirJumps = 0;
+    private int airJumps;
+    //Tracks if player is on the ground
+    private bool isGrounded;
     //Text to display count
     public TextMeshProUGUI countText;
     //Win Text
@@ -35,7 +38,9 @@ public class PlayerController : MonoBehaviour
         //Deactivate win text
         winText.SetActive(false);
         //set the player to ungrounded
-        jumps = maxJumps;
+        isGrounded = false;
+        //set the players air jump count
+        airJumps = 0;
     }
 
     //FixedUpdate runs on a fixed interval
@@ -60,10 +65,10 @@ public class PlayerController : MonoBehaviour
 
     void OnJump()
     {
-        if(jumps > 0)
+        if(isGrounded || airJumps > 0)
         {
             rb.AddForce(new Vector3(0.0f, jump), ForceMode.Impulse);
-            jumps--;
+            if (!isGrounded) airJumps--;
         }
     }
 
@@ -90,7 +95,16 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
-            jumps = maxJumps;
+            airJumps = maxAirJumps;
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 }
